@@ -2,6 +2,9 @@ package com.tui.proof.infrastructure.adapter.out.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 /**
  * Order entity
@@ -23,6 +26,9 @@ public class OrderEntity {
     @Column(name="total")
     private double orderTotal;
 
+    @Column (name="creation_date", nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDateTime creationDate;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "client_id", nullable = false)
