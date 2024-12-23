@@ -1,0 +1,30 @@
+package com.tui.proof.infrastructure.adapter.out.persistence;
+
+import com.tui.proof.application.port.in.AddressPort;
+import com.tui.proof.domain.model.ClientModel;
+import com.tui.proof.application.port.out.ClientReaderPort;
+import com.tui.proof.infrastructure.adapter.out.persistence.entity.ClientEntity;
+import com.tui.proof.infrastructure.adapter.out.persistence.repository.IClientRepo;
+import com.tui.proof.infrastructure.adapter.out.persistence.mapper.ClientMapper;
+import lombok.AllArgsConstructor;
+
+import java.util.Optional;
+
+/**
+ * Implementation of the {@link ClientReaderPort}
+ */
+@AllArgsConstructor
+public class ClientReaderAdapter implements ClientReaderPort {
+
+    private final IClientRepo clientRepo;
+    private final ClientMapper clientMapper;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<ClientModel> findByFirstNameAndLastNameAndTelephone(ClientModel client) {
+        Optional<ClientEntity> foundClient = clientRepo.findByFirstNameAndLastNameAndTelephone(client.getFirstName(), client.getLastName(), client.getTelephone());
+        return foundClient.map(clientMapper::entityToModel);
+    }
+}
