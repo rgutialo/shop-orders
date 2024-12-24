@@ -55,14 +55,14 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(errorDetail, headers, errorDetail.getStatus());
     }
 
-    private String instanceFrom(final ProblemDetail problemDetail) {
+    String instanceFrom(final ProblemDetail problemDetail) {
         return Optional.of(problemDetail)
                 .map(ProblemDetail::getInstance)
                 .map(URI::toString)
                 .orElse("");
     }
 
-    private String instanceFrom(WebRequest request) {
+    String instanceFrom(WebRequest request) {
         return Optional.of(request)
                 .filter(ServletWebRequest.class::isInstance)
                 .map(ServletWebRequest.class::cast)
