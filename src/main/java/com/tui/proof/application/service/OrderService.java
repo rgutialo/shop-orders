@@ -89,6 +89,6 @@ public class OrderService implements OrderPort {
     /** {@inheritDoc} */
     @Override
     public List<OrderModel> searchOrdersByClient(String clientData) {
-        return List.of();
+        return readerPort.findOrdersByClientData(clientData);
     }
 }

@@ -7,7 +7,7 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "CLIENT")
+@Table(name = "CLIENTS")
 public class ClientEntity {
 
     @Id

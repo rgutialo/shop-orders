@@ -6,9 +6,12 @@ import com.tui.proof.infrastructure.adapter.in.dto.v1.OrderRequest;
 import com.tui.proof.infrastructure.adapter.in.dto.v1.OrderResponse;
 import com.tui.proof.infrastructure.adapter.out.persistence.mapper.OrderMapper;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,5 +42,14 @@ public class OrderController {
         OrderModel orderCreated = orderPort.updateOrder(orderModel);
 
         return ResponseEntity.ok(orderMapper.createResponseFromModel(orderCreated));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderResponse>> searchOrdersByClientData(
+            @Param("clientContains") @NonNull String clientContains) {
+        List<OrderModel> orderModels = orderPort.searchOrdersByClient(clientContains);
+        List<OrderResponse> orderResponses =
+                orderModels.stream().map(orderMapper::createResponseFromModel).toList();
+        return ResponseEntity.ok(orderResponses);
     }
 }

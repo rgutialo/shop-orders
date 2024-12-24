@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "ADDRESS")
+@Table(name = "ADDRESSES")
 public class AddressEntity {
 
     @Id
