@@ -2,7 +2,6 @@ package com.tui.proof.infrastructure.adapter.in.validations;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-
 import java.util.Arrays;
 
 public class AllowedPilotesValidator implements ConstraintValidator<AllowedPilotes, Integer> {
@@ -15,9 +14,9 @@ public class AllowedPilotesValidator implements ConstraintValidator<AllowedPilot
     }
 
     @Override
-    public boolean isValid(Integer inputValue, ConstraintValidatorContext constraintValidatorContext) {
-        if (inputValue == null)
-            return false;
+    public boolean isValid(
+            Integer inputValue, ConstraintValidatorContext constraintValidatorContext) {
+        if (inputValue == null) return false;
         return Arrays.stream(allowedValues).anyMatch(inputValue::equals);
     }
 }

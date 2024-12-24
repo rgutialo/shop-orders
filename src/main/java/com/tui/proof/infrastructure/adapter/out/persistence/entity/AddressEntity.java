@@ -2,11 +2,8 @@ package com.tui.proof.infrastructure.adapter.out.persistence.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Immutable;
 
-/**
- * Address entity
- */
+/** Address entity */
 @Getter
 @Builder
 @Entity
@@ -17,17 +14,26 @@ public class AddressEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int addressId;
+
     @Column(name = "street")
     private String street;
+
     @Column(name = "postcode")
     private String postcode;
+
     @Column(name = "city")
     private String city;
+
     @Column(name = "country")
     private String country;
 
     @Builder
-    public AddressEntity(final int addressId, final String street, final String postcode, final String city, final String country) {
+    public AddressEntity(
+            final int addressId,
+            final String street,
+            final String postcode,
+            final String city,
+            final String country) {
         this.addressId = addressId;
         this.street = street;
         this.postcode = postcode;

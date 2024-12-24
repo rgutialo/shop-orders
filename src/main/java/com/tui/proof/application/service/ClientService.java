@@ -1,16 +1,12 @@
 package com.tui.proof.application.service;
 
-import com.tui.proof.application.port.in.AddressPort;
 import com.tui.proof.application.port.in.ClientPort;
 import com.tui.proof.application.port.out.ClientReaderPort;
 import com.tui.proof.application.port.out.ClientWriterPort;
 import com.tui.proof.domain.model.ClientModel;
-
 import java.util.Optional;
 
-/**
- * Implementation of the {@link ClientPort}
- */
+/** Implementation of the {@link ClientPort} */
 public class ClientService implements ClientPort {
 
     private final ClientReaderPort readerPort;
@@ -21,19 +17,24 @@ public class ClientService implements ClientPort {
         this.writerPort = writerPort;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ClientModel createClient(ClientModel client) {
-        ClientModel clientModel = this.searchClient(client)
-                .orElse(ClientModel.builder().firstName(client.getFirstName()).lastName(client.getLastName()).telephone(client.getTelephone()).build());
+        ClientModel clientModel =
+                this.searchClient(client)
+                        .orElse(
+                                ClientModel.builder()
+                                        .firstName(client.getFirstName())
+                                        .lastName(client.getLastName())
+                                        .telephone(client.getTelephone())
+                                        .build());
 
         return writerPort.save(clientModel);
     }
 
     /**
      * Looks for a client based on the param received
+     *
      * @param clientModel {@link ClientModel} received
      * @return {@link ClientModel} Returns the client. Otherwise, returns empty optional.
      */

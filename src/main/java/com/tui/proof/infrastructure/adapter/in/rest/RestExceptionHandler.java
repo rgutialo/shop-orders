@@ -3,6 +3,8 @@ package com.tui.proof.infrastructure.adapter.in.rest;
 import com.tui.proof.infrastructure.adapter.in.CommonExceptionHandler;
 import com.tui.proof.infrastructure.adapter.in.dto.error.ErrorDetail;
 import jakarta.servlet.http.HttpServletRequest;
+import java.net.URI;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -13,28 +15,27 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.net.URI;
-import java.util.Optional;
-
 @RestControllerAdvice
 @RequiredArgsConstructor
 @Slf4j
 public class RestExceptionHandler {
 
     private final CommonExceptionHandler commonExceptionHandler;
-    private final ResponseEntityExceptionHandler springHandler = new ResponseEntityExceptionHandler() {
-    };
+    private final ResponseEntityExceptionHandler springHandler =
+            new ResponseEntityExceptionHandler() {};
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handlerException(Exception ex, WebRequest request) {
         final HttpHeaders headers = new HttpHeaders();
         final String instance = instanceFrom(request);
         final ErrorDetail errorDetail = commonExceptionHandler.handlerException(ex, instance);
-        final boolean isNotHandled = errorDetail.getStatus().isSameCodeAs(HttpStatus.INTERNAL_SERVER_ERROR);
+        final boolean isNotHandled =
+                errorDetail.getStatus().isSameCodeAs(HttpStatus.INTERNAL_SERVER_ERROR);
 
         if (isNotHandled) {
             try {
-                ResponseEntity<Object> springDefaultResponse = springHandler.handleException(ex, request);
+                ResponseEntity<Object> springDefaultResponse =
+                        springHandler.handleException(ex, request);
                 if (springDefaultResponse != null
                         && springDefaultResponse.getBody() instanceof ProblemDetail problemDetail
                         && problemDetail.getStatus() != HttpStatus.INTERNAL_SERVER_ERROR.value()) {
@@ -55,7 +56,10 @@ public class RestExceptionHandler {
     }
 
     private String instanceFrom(final ProblemDetail problemDetail) {
-        return Optional.of(problemDetail).map(ProblemDetail::getInstance).map(URI::toString).orElse("");
+        return Optional.of(problemDetail)
+                .map(ProblemDetail::getInstance)
+                .map(URI::toString)
+                .orElse("");
     }
 
     private String instanceFrom(WebRequest request) {
