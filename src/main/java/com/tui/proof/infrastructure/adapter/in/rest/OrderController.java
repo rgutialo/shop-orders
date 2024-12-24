@@ -1,10 +1,11 @@
 package com.tui.proof.infrastructure.adapter.in.rest;
 
-import com.tui.proof.domain.model.OrderModel;
 import com.tui.proof.application.port.in.OrderPort;
+import com.tui.proof.domain.model.OrderModel;
 import com.tui.proof.infrastructure.adapter.in.dto.v1.OrderRequest;
 import com.tui.proof.infrastructure.adapter.in.dto.v1.OrderResponse;
 import com.tui.proof.infrastructure.adapter.out.persistence.mapper.OrderMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class OrderController {
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) {
+    public ResponseEntity<OrderResponse> createOrder(@Valid @RequestBody OrderRequest orderRequest) {
         OrderModel orderModel = orderMapper.createModelFromRequest(orderRequest);
         OrderModel orderCreated = orderPort.createOrder(orderModel);
 
