@@ -4,9 +4,12 @@ import com.tui.proof.application.port.in.ClientPort;
 import com.tui.proof.application.port.out.ClientReaderPort;
 import com.tui.proof.application.port.out.ClientWriterPort;
 import com.tui.proof.domain.model.ClientModel;
+
 import java.util.Optional;
 
-/** Implementation of the {@link ClientPort} */
+/**
+ * Implementation of the {@link ClientPort}
+ */
 public class ClientService implements ClientPort {
 
     private final ClientReaderPort readerPort;
@@ -17,19 +20,22 @@ public class ClientService implements ClientPort {
         this.writerPort = writerPort;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClientModel createClient(ClientModel client) {
-        ClientModel clientModel =
-                this.searchClient(client)
-                        .orElse(
-                                ClientModel.builder()
-                                        .firstName(client.getFirstName())
-                                        .lastName(client.getLastName())
-                                        .telephone(client.getTelephone())
-                                        .build());
+        Optional<ClientModel> existingClient = this.searchClient(client);
+        if (existingClient.isPresent())
+            return existingClient.get();
 
-        return writerPort.save(clientModel);
+        ClientModel newClient = ClientModel.builder()
+                .firstName(client.getFirstName())
+                .lastName(client.getLastName())
+                .telephone(client.getTelephone())
+                .build();
+
+        return writerPort.save(newClient);
     }
 
     /**
@@ -38,7 +44,7 @@ public class ClientService implements ClientPort {
      * @param clientModel {@link ClientModel} received
      * @return {@link ClientModel} Returns the client. Otherwise, returns empty optional.
      */
-    private Optional<ClientModel> searchClient(ClientModel clientModel) {
+    Optional<ClientModel> searchClient(ClientModel clientModel) {
         return readerPort.findByFirstNameAndLastNameAndTelephone(clientModel);
     }
 }

@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 /** Order business model */
 @Data
-@Builder
+@Builder(toBuilder = true)
 @EqualsAndHashCode
 public class OrderModel {
     private String number;
